@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCRP-Nexus | Creator Toolkit</title>
+    <!-- Tailwind CSS для стильного дизайну -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+
+    <!-- Шапка сайту -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-black tracking-wider text-cyan-400">⚡ SCRP-NEXUS</h1>
+            <span class="text-xs bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full border border-cyan-500/20">Creator Hub v1.0</span>
+        </div>
+    </header>
+
+    <!-- Головний контент -->
+    <main class="max-w-5xl mx-auto px-4 py-8 grid gap-8 md:grid-cols-2">
+
+        <!-- 1. Генератор ідей для відео -->
+        <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">🎬 Генератор ідей для відео</h2>
+            <p class="text-sm text-slate-400 mb-4">Отримайте випадковий трендовий гачок для TikTok або YouTube Shorts.</p>
+            <div id="idea-box" class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-sm text-slate-300 mb-4 min-h-[60px] flex items-center justify-center text-center italic">
+                Натисніть кнопку нижче, щоб згенерувати ідею...
+            </div>
+            <button onclick="generateIdea()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 rounded-xl transition shadow-lg shadow-cyan-500/20">
+                Згенерувати ідею
+            </button>
+        </section>
+
+        <!-- 2. Форматувальник текстів для Telegram -->
+        <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-lg font-bold text-indigo-400 mb-3 flex items-center gap-2">✍️ Форматувальник постів</h2>
+            <p class="text-sm text-slate-400 mb-4">Швидко додавайте жирний шрифт або стиль для соцмереж.</p>
+            <textarea id="post-input" placeholder="Введіть текст тут..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 mb-3 h-20 resize-none"></textarea>
+            <div class="flex gap-2">
+                <button onclick="formatText('bold')" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-xl text-sm transition">Жирний</button>
+                <button onclick="formatText('italic')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2 rounded-xl text-sm transition">Курсив</button>
+            </div>
+        </section>
+
+        <!-- 3. Швидкі замітки та ідеї -->
+        <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl md:col-span-2">
+            <h2 class="text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">💡 Міні-блокнот творця</h2>
+            <p class="text-sm text-slate-400 mb-4">Записуйте свої думки — вони зберігаються прямо у вашому браузері.</p>
+            <textarea id="notes-input" placeholder="Швидка нотатка на потім..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-emerald-500 mb-3 h-24"></textarea>
+            <button onclick="saveNote()" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold px-6 py-2 rounded-xl text-sm transition">Зберегти нотатку</button>
+            <span id="save-status" class="ml-3 text-xs text-emerald-400 opacity-0 transition-opacity">Збережено!</span>
+        </section>
+
+    </main>
+
+    <!-- Підвал -->
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-900 mt-12">
+        SCRP-Nexus • Powered by GitHub Pages & ToToShoP
+    </footer>
+
+    <!-- Скрипти логіки утиліт -->
+    <script>
+        const ideas = [
+            "Розпакування рідкісного тактичного спорядження з кастомним тюнінгом.",
+            "ТОП-3 помилки при початковому монтажі відео в CapCut, яких слід уникати.",
+            "Як налаштувати автоматичні сповіщення для стріму за 5 хвилин.",
+            "Огляд саморобного неонового нічника в стилі постапокаліпсису.",
+            "Експеримент: робимо кастомний брелок з епоксидної смоли в прямому ефірі."
+        ];
+
+        function generateIdea() {
+            const randomIndex = Math.floor(Math.random() * ideas.length);
+            document.getElementById('idea-box').innerText = ideas[randomIndex];
+        }
+
+        function formatText(type) {
+            const textarea = document.getElementById('post-input');
+            let text = textarea.value;
+            if (type === 'bold') {
+                textarea.value = `**${text}**`;
+            } else if (type === 'italic') {
+                textarea.value = `*${text}*`;
+            }
+        }
+
+        function saveNote() {
+            const note = document.getElementById('notes-input').value;
+            localStorage.setItem('scrp_note', note);
+            const status = document.getElementById('save-status');
+            status.style.opacity = '1';
+            setTimeout(() => { status.style.opacity = '0'; }, 2000);
+        }
+
+        window.onload = function() {
+            const savedNote = localStorage.getItem('scrp_note');
+            if (savedNote) {
+                document.getElementById('notes-input').value = savedNote;
+            }
+        }
+    </script>
+</body>
+</html>
